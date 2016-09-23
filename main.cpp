@@ -357,7 +357,17 @@ int main(int argc, char *argv[])
 		if(positionXBarycentre != -1)		
 			positionXBarycentre = (demoCV(cap).x*100)/480;
 		
-		cout << positionXBarycentre << endl;
+		if(positionXBarycentre < 40)
+			cout << "|o| | |" << endl;
+		else if (positionXBarycentre > 60)
+			cout << "| | |o|" << endl;
+		else 
+			cout << "| |o| |" << endl;
+		
+		
+		
+		
+		//cout << positionXBarycentre << endl;
 		robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
 		{
