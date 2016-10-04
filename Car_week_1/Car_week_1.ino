@@ -10,9 +10,11 @@
 
 #include <PID_v1.h>
 
-float linePos;//position of the red line in front of robot
-float pidCorrection;//PID correction to set robot back on track
-PID pidLR(linePos, pidCorrection, 0, .75 , 1.0, .075, DIRECT);
+double centerPos = 50;
+
+double linePos;//position of the red line in front of robot
+double pidCorrection;//PID correction to set robot back on track
+PID pidLR(&linePos, &pidCorrection, &centerPos, .75 , 1.0, .075, DIRECT);
 
 float leftSpeed, rightSpeed;//desired motor speeds
 float carSpeed = 200;
@@ -38,6 +40,7 @@ void loop()
   getData();//get data from Raspberry Pi
   stopMotors();
   pidCalc();
+  
 }
 
 void pidCalc()//compute PID correction and adjust left and right speeds
