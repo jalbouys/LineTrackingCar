@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
     {
 		positionXBarycentre = (demoCV(cap).x*100)/640;
 		cout << positionXBarycentre << endl;
-		robot.sendBarycenter(demoCV(cap));
+		robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
 		{
 			isArrived = true;
