@@ -30,3 +30,6 @@
 
 #cmake file
 /CMakeFiles
+/build
+/Build
+CMakeCache.txt

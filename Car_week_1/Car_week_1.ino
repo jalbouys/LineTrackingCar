@@ -2,6 +2,7 @@
 #define RIGHT_MOTOR_SPEED_PIN 10
 #define LEFT_MOTOR_DIRECTION_PIN 7
 #define RIGHT_MOTOR_DIRECTION_PIN 8
+#define LED_PIN 13
 
 #define CSpinL   2
 #define CLKpinL  3
@@ -51,6 +52,7 @@ void setup()
   pinMode(LEFT_MOTOR_DIRECTION_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_DIRECTION_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
+<<<<<<< HEAD
   digitalWrite(LED_PIN, LOW);//turn off LED
   delay(100);
   digitalWrite(LED_PIN, HIGH);//turn off LED
@@ -79,12 +81,18 @@ void setup()
   
   pidLR.SetSampleTime(10);//10ms
   pidLR.SetOutputLimits(-50, 50);
+=======
+  digitalWrite(LED_PIN, LOW);
+  pidLR.SetSampleTime(10);
+  pidLR.SetOutputLimits(-20, 20);
+>>>>>>> carOrigin/master
   pidLR.SetMode(AUTOMATIC);
   
 }
 
 void loop()
 {
+<<<<<<< HEAD
   /*if(millis() > 10000)//10 seconds
     stopMotors();
   else
@@ -94,6 +102,13 @@ void loop()
     updateSpeed(LEFT, FORWARD, leftSpeed);
     updateSpeed(RIGHT, FORWARD, rightSpeed);
   //}
+=======
+  loopTime = micros();
+  getData();//get data from Raspberry Pi
+  //stopMotors();
+  //pidCalc();
+  
+>>>>>>> carOrigin/master
 }
 
 void pidCalc()//compute PID correction and adjust left and right speeds
