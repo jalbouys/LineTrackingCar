@@ -221,7 +221,7 @@ CvPoint demoCV(VideoCapture cap)
   //morphological closing (fill small holes in the foreground)
   dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
   erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-
+    imgThresholded.type();
   imshow("Thresholded Image", imgThresholded); //show the thresholded image
   imshow("Original", imgOriginal); //show the original image
 
@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
     
     bool isArrived = false;
     
-    VideoCapture cap(1);
+    VideoCapture cap(0);
     cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
     if (!cap.isOpened()) {

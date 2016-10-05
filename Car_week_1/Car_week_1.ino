@@ -27,11 +27,11 @@ AS5040 encL (CLKpinL, CSpinL, DOpinL) ;
 AS5040 encR (CLKpinR, CSpinR, DOpinR) ;
 
 double centerPos = 50;
-int offsetLR = 60;
+int offsetLR = 0;
 
 double linePos = 50;//position of the line in front of robot
 double pidCorrection = 0;//PID correction to set robot back on track
-PID pidLR(&linePos, &pidCorrection, &centerPos, .75 , 0, 0, DIRECT);
+PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , 0, 0, DIRECT);
 //PID pidLR(&linePos, &pidCorrection, &centerPos, .75 , 1.0, .075, DIRECT);
 
 float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
@@ -77,7 +77,7 @@ void setup()
     ;
   Serial.flush();
   
-  pidLR.SetSampleTime(10);//10ms
+  pidLR.SetSampleTime(70);//10ms
   pidLR.SetOutputLimits(-50, 50);
   pidLR.SetMode(AUTOMATIC);
   
