@@ -13,7 +13,7 @@ class Robot
 
         void sendOrder(float leftMotor, float rightMotor);
         void sendBarycenter(char position);
-        void sendPID(char p, char i, char d);
+        void sendPIDS(char p, char i, char d, char s);
     protected:
         serialib port;
 };
