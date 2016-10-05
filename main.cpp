@@ -43,16 +43,11 @@ void demoRobot()
         //getchar();
 }
 
-void demoCV()
+CvPoint demoCV(VideoCapture cap)
 {
-    VideoCapture cap(0);
+    
 
-	cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
-    if (!cap.isOpened()) {
-        cout << "Unable to open the device" << endl;
-        return;
-    }   
+ 
 
 //namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 
@@ -169,6 +164,8 @@ void demoCV()
             cout << "esc key is pressed by user" << endl;
             break; 
        }
+       
+       return barycentre;
     }
 
    
@@ -177,6 +174,18 @@ void demoCV()
 
 int main(int argc, char *argv[])
 {
-    demoRobot();
-    //demoCV();
+    //demoRobot();
+    VideoCapture cap(1);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+    if (!cap.isOpened()) {
+        throw string("Unable to open the device");
+    } 
+    Robot robot;
+    
+    while(true)
+    {
+		robot.demoCV(cap);
+	}
 }
+
