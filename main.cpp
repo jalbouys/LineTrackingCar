@@ -182,10 +182,13 @@ int main(int argc, char *argv[])
         throw string("Unable to open the device");
     } 
     Robot robot;
+    int positionXBarycentre;
     
     while(true)
     {
-		robot.demoCV(cap);
+		positionXBarycentre = (demoCV(cap).x*100)/640;
+		cout << positionXBarycentre << endl;
+		robot.sendBarycenter(demoCV(cap));
 	}
 }
 
