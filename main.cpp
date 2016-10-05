@@ -37,7 +37,7 @@ void demoRobot()
     }*/
 	for (int i = 0; i < 100; i++)
 	{
-		robot.sendBarycenter(i);
+		robot.sendBarycenter(i+50);
 		usleep(100000);
 	}
 	
