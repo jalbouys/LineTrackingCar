@@ -37,6 +37,7 @@ PID pidLR(&linePos, &pidCorrection, &centerPos, .75 , 0, 0, DIRECT);
 float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
 float carSpeed = 100;
+int wheelRotL = 0, wheelRotR = 0;
 
 long loopTime;
 
