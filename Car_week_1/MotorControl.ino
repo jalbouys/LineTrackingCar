@@ -18,9 +18,9 @@ void updateSpeed(bool _motor, bool _direction, int _speed)
     b = RIGHT_MOTOR_DIRECTION_PIN;
     
     if(_direction)//forward
-      dir = 0;
-    else
       dir = 1;
+    else
+      dir = 0;
   }
 
   if(_speed > 255)
@@ -28,8 +28,8 @@ void updateSpeed(bool _motor, bool _direction, int _speed)
   else if(_speed < 0)
     _speed = 0;
   
-  digitalWrite(a, _speed);//speed
-  analogWrite(b, dir);//direction
+  analogWrite(a, _speed);//speed
+  digitalWrite(b, dir);//direction
 }
 
 void stopMotors()

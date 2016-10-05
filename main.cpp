@@ -100,7 +100,7 @@ bool checkYellow(Mat Img)
 	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
 	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
 
-	  imshow("Yellow Image", imgThresholdedYellow); //show the thresholded image
+	 // imshow("Yellow Image", imgThresholdedYellow); //show the thresholded image
 	  
 	  int nbPixelsY = 0;
 	  IplImage *maskY = new IplImage(imgThresholdedYellow);
@@ -208,30 +208,40 @@ CvPoint demoCV(VideoCapture cap)
 
   Mat imgHSV;
 
+  clock_t debutConvertion = clock();
   cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
- 
-  Mat imgThresholded;
+  clock_t finConvertion = clock();
 
+  cout << "Temps converstion :" <<  (double) (finConvertion - debutConvertion) << endl;
+
+  Mat imgThresholded;
+	
+ clock_t debutBinarisation = clock();
   inRange(imgHSV, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imgThresholded); //Threshold the image
-      
+ clock_t finBinarisation = clock();
+ cout << "Temps binarisation :  " << (double) (finBinarisation - debutBinarisation) << endl;
+ 
+ cout << "Type de la matrice : " << imgThresholded.type()<<endl; 
+  clock_t debutTraitement = clock();
   //morphological opening (remove small objects from the foreground)
-  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
+  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
+  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
 
   //morphological closing (fill small holes in the foreground)
-  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-
-  imshow("Thresholded Image", imgThresholded); //show the thresholded image
-  imshow("Original", imgOriginal); //show the original image
+  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
+  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
+ clock_t finTraitement = clock();
+  cout << "Temps Traitement" << (double) (finTraitement-debutTraitement)<< endl;
+  //imshow("Thresholded Image", imgThresholded); //show the thresholded image
+  //imshow("Original", imgOriginal); //show the original image
 
     int sommeX = 0, sommeY = 0;
     int nbPixels = 0;
     IplImage *mask = new IplImage(imgThresholded);
-    IplImage *image = new IplImage(imgOriginal);
     
-    cvShowImage("Masque", mask);
     
+    //cvShowImage("Masque", mask);
+    clock_t debutBary = clock();
     for(int x = 0; x < mask->width; x++) {
         for(int y = 0; y < mask->height; y++) { 
  
@@ -243,7 +253,9 @@ CvPoint demoCV(VideoCapture cap)
             }
         }
     }
-    
+    clock_t finBary = clock();
+    cout << "Temps calcul barycentre : " << (double) (finBary-debutBary) << endl;
+   
      CvPoint barycentre;
     
         // If there is no pixel, we return a center outside the image, else we return the center of gravity
@@ -251,9 +263,7 @@ CvPoint demoCV(VideoCapture cap)
 	{
          barycentre = cvPoint((int)(sommeX / (nbPixels)), (int)(sommeY / (nbPixels)));
 	 }
-    else
-        cout << "out of picture" << endl;
-    
+        
     int objectNextStepX, objectNextStepY;
     CvPoint objectNextPos;
     
@@ -261,7 +271,7 @@ CvPoint demoCV(VideoCapture cap)
     if (nbPixels > 10) {
  
         // Reset position if no pixel were found
-        if (barycentre.x == -1 || barycentre.y == -1) {
+       /* if (barycentre.x == -1 || barycentre.y == -1) {
             barycentre.x = objectNextPos.x;
             barycentre.y = objectNextPos.y;
         }
@@ -274,7 +284,7 @@ CvPoint demoCV(VideoCapture cap)
         if (abs(barycentre.y - objectNextPos.y) > STEP_MIN) {
             objectNextStepY = max(STEP_MIN, min(STEP_MAX, abs(barycentre.y - objectNextPos.y) / 2));
             //barycentre.y += (-1) * sign(barycentre.y - objectNextPos.y) * objectNextStepY;
-        }
+        }*/
  
     // -1 = object isn't within the camera range
     } else {
@@ -287,6 +297,12 @@ CvPoint demoCV(VideoCapture cap)
     // We show the image on the window
     cvShowImage("GeckoGeek Color Tracking", image);
        
+    
+    
+ 
+    // We show the image on the window
+    //cvShowImage("GeckoGeek Color Tracking", image);
+    if(clock() >= arrivee)   
        if(!checkYellow(imgHSV))
        {
 		barycentre.x = -1;
@@ -305,9 +321,9 @@ int main(int argc, char *argv[])
     
     bool isArrived = false;
     
-    VideoCapture cap(1);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+    VideoCapture cap(0);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH,480 );
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 320);
     if (!cap.isOpened()) {
         throw string("Unable to open the device");
     } 
