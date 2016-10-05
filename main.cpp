@@ -35,11 +35,12 @@ void demoRobot()
         robot.sendOrder(0.1, 0.1);
         getchar();
     }*/
-    while(true) {
-        cout << "send data" << endl;
-        robot.sendBarycenter(0);
-        usleep(20);
-    }
+	for (int i = 0; i < 100; i++)
+	{
+		robot.sendBarycenter(i);
+		usleep(100000);
+	}
+	
         //getchar();
 }
 
@@ -174,7 +175,8 @@ CvPoint demoCV(VideoCapture cap)
 
 int main(int argc, char *argv[])
 {
-    //demoRobot();
+    demoRobot();
+    /*
     VideoCapture cap(1);
     cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
@@ -189,6 +191,6 @@ int main(int argc, char *argv[])
 		positionXBarycentre = (demoCV(cap).x*100)/640;
 		cout << positionXBarycentre << endl;
 		robot.sendBarycenter(demoCV(cap));
-	}
+	}*/
 }
 
