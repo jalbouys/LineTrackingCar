@@ -31,3 +31,10 @@ void Robot::sendBarycenter(char position){
     oss << position;
     port.WriteString(oss.str().c_str());
 }
+
+void Robot::sendPID(char p, char i, char d){
+
+    ostringstream oss;
+    oss << p << " " << i << " " << d << endl;
+    port.WriteString(oss.str().c_str());
+}
