@@ -2,6 +2,7 @@
 #define RIGHT_MOTOR_SPEED_PIN 10
 #define LEFT_MOTOR_DIRECTION_PIN 7
 #define RIGHT_MOTOR_DIRECTION_PIN 8
+#define LED_PIN 13
 
 #define LEFT 1
 #define RIGHT 0
@@ -28,7 +29,8 @@ void setup()
   pinMode(RIGHT_MOTOR_SPEED_PIN, OUTPUT);
   pinMode(LEFT_MOTOR_DIRECTION_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_DIRECTION_PIN, OUTPUT);
-
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
   pidLR.SetSampleTime(10);
   pidLR.SetOutputLimits(-20, 20);
   pidLR.SetMode(AUTOMATIC);
