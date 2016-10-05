@@ -338,14 +338,23 @@ int main(int argc, char *argv[])
     if (!cap.isOpened()) {
         throw string("Unable to open the device");
     } 
-    //Robot robot;
+    Robot robot;
     int positionXBarycentre;
     
+	if (argc == 5)
+	{
+		int P = argv[1] * 100;
+		int I = argv[2] * 100;
+		int D = argv[3] * 100;
+		int speed = argv[4]*100;
+		robot.sendPIDS(P, I, D, speed)
+	}
+	
     while(!isArrived)
     {
 		positionXBarycentre = (demoCV(cap).x*100)/480;
 		cout << positionXBarycentre << endl;
-		//robot.sendBarycenter(positionXBarycentre);
+		robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
 		{
 			isArrived = true;
