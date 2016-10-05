@@ -40,8 +40,8 @@ void loop()
 {
   loopTime = micros();
   getData();//get data from Raspberry Pi
-  stopMotors();
-  pidCalc();
+  //stopMotors();
+  //pidCalc();
   
 }
 

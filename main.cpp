@@ -146,7 +146,7 @@ void demoCV()
         }
         if (abs(barycentre.y - objectNextPos.y) > STEP_MIN) {
             objectNextStepY = max(STEP_MIN, min(STEP_MAX, abs(barycentre.y - objectNextPos.y) / 2));
-            barycentre.y += (-1) * sign(barycentre.y - objectNextPos.y) * objectNextStepY;
+            //barycentre.y += (-1) * sign(barycentre.y - objectNextPos.y) * objectNextStepY;
         }
  
     // -1 = object isn't within the camera range
@@ -173,6 +173,7 @@ void demoCV()
 
    
 }
+
 
 int main(int argc, char *argv[])
 {
