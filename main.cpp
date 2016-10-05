@@ -284,18 +284,8 @@ CvPoint demoCV(VideoCapture cap)
  
     }
  
-    // Draw an object (circle) centered on the calculated center of gravity
-    if (nbPixels > 10)
-        cvDrawCircle(image, barycentre, 15, CV_RGB(255, 0, 0), -1);
- 
     // We show the image on the window
     cvShowImage("GeckoGeek Color Tracking", image);
-
-        if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
-       {
-            cout << "esc key is pressed by user" << endl;
-            break; 
-       }
        
        if(!checkYellow(imgHSV))
        {
@@ -321,14 +311,14 @@ int main(int argc, char *argv[])
     if (!cap.isOpened()) {
         throw string("Unable to open the device");
     } 
-    Robot robot;
+    //Robot robot;
     int positionXBarycentre;
     
     while(!isArrived)
     {
 		positionXBarycentre = (demoCV(cap).x*100)/640;
 		cout << positionXBarycentre << endl;
-		robot.sendBarycenter(positionXBarycentre);
+		//robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
 		{
 			isArrived = true;
