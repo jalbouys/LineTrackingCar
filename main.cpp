@@ -18,7 +18,7 @@ using namespace cv;
 void demoRobot()
 {
     Robot robot;
-    while (true) {
+    /*while (true) {
         cout << "Ne bouge pas" << endl;
         robot.sendOrder(0, 0);
         getchar();
@@ -34,12 +34,18 @@ void demoRobot()
         cout << "Roues gauche et droite à même allure" << endl;
         robot.sendOrder(0.1, 0.1);
         getchar();
+    }*/
+    while(true) {
+        cout << "send data" << endl;
+        robot.sendBarycenter(0);
+        usleep(20);
     }
+        //getchar();
 }
 
 void demoCV()
 {
-    VideoCapture cap(1);
+    VideoCapture cap(0);
 
 	cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
@@ -170,6 +176,6 @@ void demoCV()
 
 int main(int argc, char *argv[])
 {
-    // demoRobot();
-    demoCV();
+    demoRobot();
+    //demoCV();
 }
