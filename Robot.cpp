@@ -28,7 +28,7 @@ void Robot::sendOrder(float leftMotor, float rightMotor)
 
 void Robot::sendBarycenter(char position){
     ostringstream oss;
-    oss << position << "\r\n";
+    oss << position;
 
     port.WriteString(oss.str().c_str());
 }

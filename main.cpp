@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "Robot.h"
 #include <opencv2/opencv.hpp>
+#include <time.h>
 
 using namespace std;
 using namespace cv;
@@ -11,6 +12,38 @@ using namespace cv;
 // Step mooving for object min & max
 #define STEP_MIN 5
 #define STEP_MAX 100 
+
+
+#define iLowHBLACK 0;
+#define iHighHBLACK  179;
+
+#define iLowSBLACK  0; 
+#define iHighSBLACK  50;
+ 
+#define iLowVBLACK 0;
+#define iHighVBLACK  100;
+
+
+#define iLowHBLUE 100;
+#define iHighHBLUE 120;
+
+#define iLowSBLUE 120; 
+#define iHighSBLUE 255;
+
+#define iLowVBLUE 0;
+#define iHighVBLUE 255;
+
+#define iLowHRED 0;
+#define iHighHRED 30;
+
+#define iLowSRED 95; 
+#define iHighSRED 255;
+
+#define iLowVRED 95;
+#define iHighVRED 255;
+
+String color = "BLACK";
+clock_t arrivee = 0;
 
 /**
  * Fonction de démonstration
@@ -37,12 +70,78 @@ void demoRobot()
     }*/
 	for (int i = 0; i < 100; i++)
 	{
-		robot.sendBarycenter(i+50);
+		robot.sendBarycenter(i);
 		usleep(100000);
 	}
 	
         //getchar();
 }
+
+bool checkYellow(Mat Img)
+{
+	 int iLowHY = 20;
+	 int iHighHY = 30;
+
+	 int iLowSY = 100; 
+	 int iHighSY = 255;
+
+	 int iLowVY = 100;
+	 int iHighVY = 255;
+	 
+	 Mat imgThresholdedYellow;
+	 
+	 inRange(Img, Scalar(iLowHY, iLowSY, iLowVY), Scalar(iHighHY, iHighSY, iHighVY), imgThresholdedYellow);
+	       
+	  //morphological opening (remove small objects from the foreground)
+	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
+	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
+
+	  //morphological closing (fill small holes in the foreground)
+	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
+	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
+
+	  imshow("Yellow Image", imgThresholdedYellow); //show the thresholded image
+	  
+	  int nbPixelsY = 0;
+	  IplImage *maskY = new IplImage(imgThresholdedYellow);
+	  
+	  for(int x = 0; x < maskY->width; x++) {
+        for(int y = 400; y < maskY->height; y++) { 
+ 
+            // If its a tracked pixel, count it to the center of gravity's calcul
+            if(((uchar *)(maskY->imageData + y*maskY->widthStep))[x] == 255) {
+                (nbPixelsY)++;
+            }
+        }
+    }
+    
+    if(nbPixelsY >= 10000 && clock()>= arrivee)
+    {
+		
+		cout << "New Lap" << endl;
+		if(color == "BLACK")
+		{
+			color = "RED";
+			arrivee = clock()+(10*CLOCKS_PER_SEC);
+			
+		}
+		else if (color == "RED")
+		{
+			arrivee = clock()+(10*CLOCKS_PER_SEC);
+			color = "BLUE";
+			
+		}
+		else if (color == "BLUE")
+		{
+			arrivee = clock()+(10*CLOCKS_PER_SEC);
+			color = "FINISH";
+			return false;
+		}
+	}
+	
+	return true;
+} 
+
 
 CvPoint demoCV(VideoCapture cap)
 {
@@ -52,14 +151,46 @@ CvPoint demoCV(VideoCapture cap)
 
 //namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 
- int iLowH = 102;
- int iHighH = 120;
+	int iLowH;
+	int iHighH;
+	int iLowS;
+	int iHighS;
+	int iLowV;
+	int iHighV;
 
- int iLowS = 60; 
- int iHighS = 255;
+	if(color == "BLACK")
+	{
+	 iLowH = iLowHBLACK;
+	 iHighH = iHighHBLACK;
 
- int iLowV = 0;
- int iHighV = 255;
+	 iLowS = iLowSBLACK; 
+	 iHighS = iHighSBLACK;
+
+	 iLowV = iLowVBLACK;
+	 iHighV = iHighVBLACK;
+	}
+	else if(color == "RED")
+	{
+	 iLowH = iLowHRED;
+	 iHighH = iHighHRED;
+
+	 iLowS = iLowSRED; 
+	 iHighS = iHighSRED;
+
+	 iLowV = iLowVRED;
+	 iHighV = iHighVRED;
+	}
+	else if(color == "BLUE")
+	{
+	 iLowH = iLowHBLUE;
+	 iHighH = iHighHBLUE;
+
+	 iLowS = iLowSBLUE; 
+	 iHighS = iHighSBLUE;
+
+	 iLowV = iLowVBLUE;
+	 iHighV = iHighVBLUE;
+	}
 
 
 
@@ -166,6 +297,11 @@ CvPoint demoCV(VideoCapture cap)
             break; 
        }
        
+       if(!checkYellow(imgHSV))
+       {
+		barycentre.x = -1;
+		barycentre.y = -1;
+	   }
        return barycentre;
     }
 
@@ -175,8 +311,10 @@ CvPoint demoCV(VideoCapture cap)
 
 int main(int argc, char *argv[])
 {
-    demoRobot();
-    /*
+    //demoRobot();
+    
+    bool isArrived = false;
+    
     VideoCapture cap(1);
     cap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
@@ -186,11 +324,16 @@ int main(int argc, char *argv[])
     Robot robot;
     int positionXBarycentre;
     
-    while(true)
+    while(!isArrived)
     {
 		positionXBarycentre = (demoCV(cap).x*100)/640;
 		cout << positionXBarycentre << endl;
 		robot.sendBarycenter(demoCV(cap));
-	}*/
+		if(color == "FINISH")
+		{
+			isArrived = true;
+		}
+	}
+	
 }
 
