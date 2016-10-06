@@ -212,16 +212,16 @@ CvPoint demoCV(VideoCapture cap)
   cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
   clock_t finConvertion = clock();
 
-  cout << "Temps converstion :" <<  (double) (finConvertion - debutConvertion) << endl;
+  //cout << "Temps converstion :" <<  (double) (finConvertion - debutConvertion) << endl;
 
   Mat imgThresholded;
 	
  clock_t debutBinarisation = clock();
   inRange(imgHSV, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imgThresholded); //Threshold the image
  clock_t finBinarisation = clock();
- cout << "Temps binarisation :  " << (double) (finBinarisation - debutBinarisation) << endl;
+ //cout << "Temps binarisation :  " << (double) (finBinarisation - debutBinarisation) << endl;
  
- cout << "Type de la matrice : " << imgThresholded.type()<<endl; 
+ //cout << "Type de la matrice : " << imgThresholded.type()<<endl; 
   clock_t debutTraitement = clock();
   //morphological opening (remove small objects from the foreground)
   erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
@@ -236,7 +236,7 @@ CvPoint demoCV(VideoCapture cap)
   dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
   erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
  clock_t finTraitement = clock();
-  cout << "Temps Traitement" << (double) (finTraitement-debutTraitement)<< endl;
+  //cout << "Temps Traitement" << (double) (finTraitement-debutTraitement)<< endl;
   //imshow("Thresholded Image", imgThresholded); //show the thresholded image
   //imshow("Original", imgOriginal); //show the original image
 
@@ -259,7 +259,7 @@ CvPoint demoCV(VideoCapture cap)
         }
     }
     clock_t finBary = clock();
-    cout << "Temps calcul barycentre : " << (double) (finBary-debutBary) << endl;
+    //cout << "Temps calcul barycentre : " << (double) (finBary-debutBary) << endl;
    
      CvPoint barycentre;
     
@@ -344,11 +344,12 @@ int main(int argc, char *argv[])
     
 	if (argc == 5)
 	{
-		int P = argv[1] * 100;
-		int I = argv[2] * 100;
-		int D = argv[3] * 100;
-		int speed = argv[4]*100;
-		robot.sendPIDS(P, I, D, speed)
+		float P = atof(argv[1]) * 100;
+		float I = atof(argv[2]) * 100;
+		float D = atof(argv[3]) * 100;
+		float speed = atof(argv[4]);
+		//cout << P << " " << I << " " << D << " " << speed << endl;
+		robot.sendPIDS(P, I, D, speed);
 	}
 	
     while(!isArrived)
