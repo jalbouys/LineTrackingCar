@@ -12,6 +12,41 @@
 
 #define LED_PIN 13
 
+<<<<<<< HEAD
+=======
+
+#define LEFT 1
+#define RIGHT 0
+#define FORWARD 1
+#define BACK 0
+
+
+
+#include <PID_v1.h>
+#include <AS5040.h>//encoder
+
+AS5040 encL (CLKpinL, CSpinL, DOpinL) ;
+AS5040 encR (CLKpinR, CSpinR, DOpinR) ;
+
+double centerPos = 50;
+int offsetLR = 0;
+
+double linePos = 50;//position of the line in front of robot
+double pidCorrection = 0;//PID correction to set robot back on track
+PID pidLR(&linePos, &pidCorrection, &centerPos, 2.5 ,0.15, 0.3, DIRECT);
+//PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , .5, .1, DIRECT);
+
+float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
+float leftSpeedometer = 0, rightSpeedometer = 0;
+int carSpeed = 95;
+int wheelRotL = 0, wheelRotR = 0;
+int speedCorrection = 0;
+
+long loopTime;
+
+int data = 0;
+
+>>>>>>> carOrigin/master
 void setup()
 {
   Serial.begin(115200);
@@ -43,27 +78,32 @@ void setup()
   
   Serial.write('r');
 
-  while(Serial.available() < 4)
+  /*while(Serial.available() < 4)
     ;
 
   float p = Serial.read()/100.0;
   float i = Serial.read()/100.0;
   float d = Serial.read()/100.0;
+  //carSpeed = Serial.read();
   carSpeed = Serial.read();
   Serial.println(p);
   Serial.println(i);
   Serial.println(d);
   Serial.println(carSpeed);
   
-  pidLR.SetTunings(p, i, d);
-  
+  pidLR.SetTunings(p, i, d);  
   Serial.flush();
-  
-  pidLR.SetSampleTime(70);//10ms
-  pidLR.SetOutputLimits(-100, 100);
+  */
+  pidLR.SetSampleTime(2);//10ms
+  pidLR.SetOutputLimits(-50, 50);
   pidLR.SetMode(AUTOMATIC);
   
+<<<<<<< HEAD
   pidLR.SetTunings(p, i, d);
+=======
+  
+  //pidLR.SetTunings(p, i, d);
+>>>>>>> carOrigin/master
   
 }
 
@@ -83,6 +123,7 @@ void loop()
 void pidCalc()//compute PID correction and adjust left and right speeds
 {
   pidLR.Compute();//compute PID output
-  leftSpeed = carSpeed + pidCorrection + offsetLR + speedCorrection;
-  rightSpeed = carSpeed - pidCorrection - offsetLR - speedCorrection;
+  //pidCorrection = (linePos - centerPos)*1.0;
+  leftSpeed = carSpeed + pidCorrection + offsetLR;
+  rightSpeed = carSpeed - pidCorrection - offsetLR;
 }

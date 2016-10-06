@@ -93,12 +93,12 @@ bool checkYellow(Mat Img)
 	 inRange(Img, Scalar(iLowHY, iLowSY, iLowVY), Scalar(iHighHY, iHighSY, iHighVY), imgThresholdedYellow);
 	       
 	  //morphological opening (remove small objects from the foreground)
-	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
+	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
+	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
 
 	  //morphological closing (fill small holes in the foreground)
-	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
+	  dilate( imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
+	  erode(imgThresholdedYellow, imgThresholdedYellow, getStructuringElement(MORPH_ELLIPSE, Size(3,3)) );
 
 	 // imshow("Yellow Image", imgThresholdedYellow); //show the thresholded image
 	  
@@ -229,8 +229,8 @@ CvPoint demoCV(VideoCapture cap)
 
   //morphological closing (fill small holes in the foreground)
 
-  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
+  dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
+  erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
     imgThresholded.type();
 
   dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
@@ -334,8 +334,8 @@ int main(int argc, char *argv[])
     
     bool isArrived = false;
     VideoCapture cap(0);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH,480 );
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 320);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH,320 );
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 242);
     if (!cap.isOpened()) {
         throw string("Unable to open the device");
     } 
@@ -348,16 +348,29 @@ int main(int argc, char *argv[])
 		float I = atof(argv[2]) * 100;
 		float D = atof(argv[3]) * 100;
 		float speed = atof(argv[4]);
-		//cout << P << " " << I << " " << D << " " << speed << endl;
+		cout << P << " " << I << " " << D << " " << speed << endl;
 		robot.sendPIDS(P, I, D, speed);
 	}
 	
     while(!isArrived)
     {
 		if(positionXBarycentre != -1)		
-			positionXBarycentre = (demoCV(cap).x*100)/480;
+			positionXBarycentre = (demoCV(cap).x*100)/320;
 		
-		cout << positionXBarycentre << endl;
+		if(positionXBarycentre >=45 && positionXBarycentre <= 55)
+			positionXBarycentre =50;
+		
+		if(positionXBarycentre < 40)
+			cout << "|o| | |" << endl;
+		else if (positionXBarycentre > 60)
+			cout << "| | |o|" << endl;
+		else 
+			cout << "| |o| |" << endl;
+		
+		
+		
+		
+		//cout << positionXBarycentre << endl;
 		robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
 		{
