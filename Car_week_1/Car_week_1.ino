@@ -38,6 +38,7 @@ float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
 int carSpeed = 100;
 int wheelRotL = 0, wheelRotR = 0;
+int speedCorrection = 0;
 
 long loopTime;
 
@@ -77,10 +78,14 @@ void setup()
   while(Serial.available() < 4)
     ;
 
-  float p = Serial.read()/100;
-  float i = Serial.read()/100;
-  float d = Serial.read()/100;
+  float p = Serial.read()/100.0;
+  float i = Serial.read()/100.0;
+  float d = Serial.read()/100.0;
   carSpeed = Serial.read();
+  Serial.println(p);
+  Serial.println(i);
+  Serial.println(d);
+  Serial.println(carSpeed);
   
   pidLR.SetTunings(p, i, d);
   
@@ -108,6 +113,6 @@ void loop()
 void pidCalc()//compute PID correction and adjust left and right speeds
 {
   pidLR.Compute();//compute PID output
-  leftSpeed = carSpeed + pidCorrection + offsetLR;
-  rightSpeed = carSpeed - pidCorrection - offsetLR;
+  leftSpeed = carSpeed + pidCorrection + offsetLR + speedCorrection;
+  rightSpeed = carSpeed - pidCorrection - offsetLR - speedCorrection;
 }
