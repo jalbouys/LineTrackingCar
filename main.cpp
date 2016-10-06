@@ -354,7 +354,9 @@ int main(int argc, char *argv[])
 	
     while(!isArrived)
     {
-		positionXBarycentre = (demoCV(cap).x*100)/480;
+		if(positionXBarycentre != -1)		
+			positionXBarycentre = (demoCV(cap).x*100)/480;
+		
 		cout << positionXBarycentre << endl;
 		robot.sendBarycenter(positionXBarycentre);
 		if(color == "FINISH")
