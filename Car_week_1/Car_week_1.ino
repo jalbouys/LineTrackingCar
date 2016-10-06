@@ -87,7 +87,7 @@ void setup()
   Serial.flush();
   
   pidLR.SetSampleTime(70);//10ms
-  pidLR.SetOutputLimits(-50, 50);
+  pidLR.SetOutputLimits(-100, 100);
   pidLR.SetMode(AUTOMATIC);
   
 }
