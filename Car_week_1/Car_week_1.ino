@@ -31,12 +31,12 @@ int offsetLR = 0;
 
 double linePos = 50;//position of the line in front of robot
 double pidCorrection = 0;//PID correction to set robot back on track
-PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , 0, 0, DIRECT);
+PID pidLR(&linePos, &pidCorrection, &centerPos, 2 ,0, 0, DIRECT);
 //PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , .5, .1, DIRECT);
 
 float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
-int carSpeed = 100;
+int carSpeed = 85;
 int wheelRotL = 0, wheelRotR = 0;
 
 long loopTime;
@@ -74,21 +74,22 @@ void setup()
   
   Serial.write('r');
 
-  while(Serial.available() < 4)
+  /*while(Serial.available() < 4)
     ;
 
-  float p = Serial.read()/100;
-  float i = Serial.read()/100;
-  float d = Serial.read()/100;
-  carSpeed = Serial.read();
-  
-  pidLR.SetTunings(p, i, d);
+  float p = Serial.read()/100.0;
+  float i = Serial.read()/100.0;
+  float d = Serial.read()/100.0;
+  //carSpeed = Serial.read();
   
   Serial.flush();
-  
+  */
   pidLR.SetSampleTime(70);//10ms
-  pidLR.SetOutputLimits(-50, 50);
+  pidLR.SetOutputLimits(-30, 30);
   pidLR.SetMode(AUTOMATIC);
+  
+  
+  //pidLR.SetTunings(p, i, d);
   
 }
 
@@ -108,6 +109,7 @@ void loop()
 void pidCalc()//compute PID correction and adjust left and right speeds
 {
   pidLR.Compute();//compute PID output
+  //pidCorrection = (linePos - centerPos)*1.0;
   leftSpeed = carSpeed + pidCorrection + offsetLR;
   rightSpeed = carSpeed - pidCorrection - offsetLR;
 }
