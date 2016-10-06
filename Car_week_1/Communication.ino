@@ -5,7 +5,7 @@ void getData()//get data from Raspberry Pi
     char data_in = Serial.read();
     if(data_in == 0)//not Position command
     {
-      linePos = 100 - linePos; 
+      //linePos = 100 - linePos; 
     }
     else if(data_in == 255){
       stopMotors();
@@ -21,7 +21,7 @@ void getData()//get data from Raspberry Pi
       }
       //Serial.println((int)data);
       Serial.flush();//clear buffer
-      if(linePos>50)
+      if(linePos > 50)
         digitalWrite(LED_PIN, HIGH);//turn on LED
       else
         digitalWrite(LED_PIN, LOW);//turn off LED

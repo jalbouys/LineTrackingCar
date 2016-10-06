@@ -12,14 +12,11 @@
 
 #define LED_PIN 13
 
-<<<<<<< HEAD
-=======
 
 #define LEFT 1
 #define RIGHT 0
 #define FORWARD 1
 #define BACK 0
-
 
 
 #include <PID_v1.h>
@@ -33,12 +30,12 @@ int offsetLR = 0;
 
 double linePos = 50;//position of the line in front of robot
 double pidCorrection = 0;//PID correction to set robot back on track
-PID pidLR(&linePos, &pidCorrection, &centerPos, 2.5 ,0.15, 0.3, DIRECT);
+PID pidLR(&linePos, &pidCorrection, &centerPos, 2 ,0.1, 0.3, DIRECT);
 //PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , .5, .1, DIRECT);
 
 float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
-int carSpeed = 95;
+int carSpeed = 90;
 int wheelRotL = 0, wheelRotR = 0;
 int speedCorrection = 0;
 
@@ -46,7 +43,6 @@ long loopTime;
 
 int data = 0;
 
->>>>>>> carOrigin/master
 void setup()
 {
   Serial.begin(115200);
@@ -78,6 +74,9 @@ void setup()
   
   Serial.write('r');
 
+  while(Serial.available() < 1)//wait for first transmission
+    ;
+
   /*while(Serial.available() < 4)
     ;
 
@@ -98,12 +97,6 @@ void setup()
   pidLR.SetOutputLimits(-50, 50);
   pidLR.SetMode(AUTOMATIC);
   
-<<<<<<< HEAD
-  pidLR.SetTunings(p, i, d);
-=======
-  
-  //pidLR.SetTunings(p, i, d);
->>>>>>> carOrigin/master
   
 }
 

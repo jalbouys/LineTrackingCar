@@ -22,11 +22,9 @@ void readEncoders()
 
   int k = 1;//multiplier
 
-    desiredRightSpeedometer = leftSpeedometer - pidCorrection * k;//right should be slower than left
+   // desiredRightSpeedometer = leftSpeedometer - pidCorrection * k;//right should be slower than left
 
 
-  leftSpeed = pidCorrection + speedCorrection;
-  rightSpeed = - pidCorrection - speedCorrection;
   
   //Serial.println (encL.read (), DEC) ;
   //Serial.println (encR.read (), DEC) ;

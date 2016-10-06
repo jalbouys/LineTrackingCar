@@ -34,6 +34,6 @@ void updateSpeed(bool _motor, bool _direction, int _speed)
 
 void stopMotors()
 {
-  digitalWrite(LEFT_MOTOR_SPEED_PIN, 0);//speed
-  digitalWrite(RIGHT_MOTOR_SPEED_PIN, 0);//speed
+  analogWrite(LEFT_MOTOR_SPEED_PIN, 0);//speed
+  analogWrite(RIGHT_MOTOR_SPEED_PIN, 0);//speed
 }
