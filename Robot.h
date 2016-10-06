@@ -4,7 +4,7 @@
 #include "serialib.h"
 
 #define SERIAL_PORT     "/dev/ttyUSB0"
-#define SERIAL_BAUDRATE 9600
+#define SERIAL_BAUDRATE 115200
 
 class Robot
 {

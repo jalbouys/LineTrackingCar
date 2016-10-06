@@ -348,7 +348,7 @@ int main(int argc, char *argv[])
 		float I = atof(argv[2]) * 100;
 		float D = atof(argv[3]) * 100;
 		float speed = atof(argv[4]);
-		//cout << P << " " << I << " " << D << " " << speed << endl;
+		cout << P << " " << I << " " << D << " " << speed << endl;
 		robot.sendPIDS(P, I, D, speed);
 	}
 	
