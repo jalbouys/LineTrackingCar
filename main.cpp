@@ -357,6 +357,9 @@ int main(int argc, char *argv[])
 		if(positionXBarycentre != -1)		
 			positionXBarycentre = (demoCV(cap).x*100)/480;
 		
+		if(positionXBarycentre >=45 && positionXBarycentre <= 55)
+			positionXBarycentre =50;
+		
 		if(positionXBarycentre < 40)
 			cout << "|o| | |" << endl;
 		else if (positionXBarycentre > 60)
