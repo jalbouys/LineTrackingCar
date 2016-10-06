@@ -237,15 +237,15 @@ CvPoint demoCV(VideoCapture cap)
   erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
  clock_t finTraitement = clock();
   cout << "Temps Traitement" << (double) (finTraitement-debutTraitement)<< endl;
-  imshow("Thresholded Image", imgThresholded); //show the thresholded image
-  imshow("Original", imgOriginal); //show the original image
+  //imshow("Thresholded Image", imgThresholded); //show the thresholded image
+  //imshow("Original", imgOriginal); //show the original image
 
     int sommeX = 0, sommeY = 0;
     int nbPixels = 0;
     IplImage *mask = new IplImage(imgThresholded);
     IplImage *image = new IplImage(imgOriginal);
     
-    cvShowImage("Masque", mask);
+    //cvShowImage("Masque", mask);
     clock_t debutBary = clock();
     for(int x = 0; x < mask->width; x++) {
         for(int y = 0; y < mask->height; y++) { 
@@ -298,17 +298,18 @@ CvPoint demoCV(VideoCapture cap)
         barycentre.y = -1;
  
     }
-     if(nbPixels >10)
-		cvDrawCircle(image,barycentre,15,CV_RGB(255,0,0),-1);
+    /*
+    if(nbPixels >10)
+		cvDrawCircle(image,barycentre,15,CV_RGB(255,0,0),-1);*/
     // We show the image on the window
-    cvShowImage("GeckoGeek Color Tracking", image);
+    //cvShowImage("GeckoGeek Color Tracking", image);
     
 
-    
+    /*
     if(waitKey(30) == 27)
     {
 		break;
-	}
+	}*/
  
     // We show the image on the window
     //cvShowImage("GeckoGeek Color Tracking", image);
