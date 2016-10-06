@@ -46,7 +46,7 @@ int data = 0;
 void setup()
 {
   Serial.begin(115200);
-    
+  
   pinMode(LEFT_MOTOR_SPEED_PIN, OUTPUT);
   pinMode(RIGHT_MOTOR_SPEED_PIN, OUTPUT);
   pinMode(LEFT_MOTOR_DIRECTION_PIN, OUTPUT);
