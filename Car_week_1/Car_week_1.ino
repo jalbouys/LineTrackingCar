@@ -12,38 +12,6 @@
 
 #define LED_PIN 13
 
-
-#define LEFT 1
-#define RIGHT 0
-#define FORWARD 1
-#define BACK 0
-
-
-
-#include <PID_v1.h>
-#include <AS5040.h>//encoder
-
-AS5040 encL (CLKpinL, CSpinL, DOpinL) ;
-AS5040 encR (CLKpinR, CSpinR, DOpinR) ;
-
-double centerPos = 50;
-int offsetLR = 0;
-
-double linePos = 50;//position of the line in front of robot
-double pidCorrection = 0;//PID correction to set robot back on track
-PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , 0, 0, DIRECT);
-//PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , .5, .1, DIRECT);
-
-float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
-float leftSpeedometer = 0, rightSpeedometer = 0;
-int carSpeed = 100;
-int wheelRotL = 0, wheelRotR = 0;
-int speedCorrection = 0;
-
-long loopTime;
-
-int data = 0;
-
 void setup()
 {
   Serial.begin(115200);
@@ -94,6 +62,8 @@ void setup()
   pidLR.SetSampleTime(70);//10ms
   pidLR.SetOutputLimits(-100, 100);
   pidLR.SetMode(AUTOMATIC);
+  
+  pidLR.SetTunings(p, i, d);
   
 }
 

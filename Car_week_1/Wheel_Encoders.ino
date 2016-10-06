@@ -16,17 +16,17 @@ void readEncoders()
   if(wheelRotR < -512)//corrects 0 to 1023 error
     wheelRotR += 1023;
     
-  rightSpeedometer = 0.95*rightSpeedometer + (tMicros - loopTime) * wheelRotR;
+  rightSpeedometer = -0.95*rightSpeedometer + (tMicros - loopTime) * wheelRotR;
   
   loopTime = micros();
 
-  if(pidCorrection > 0)
-    speedCorrection = (leftSpeedometer - rightSpeedometer) * pidCorrection;
-  if(pidCorrection < 0)
-    speedCorrection = (leftSpeedometer - rightSpeedometer) * pidCorrection;
+  int k = 1;//multiplier
 
-  leftSpeed = carSpeed + pidCorrection + offsetLR + speedCorrection;
-  rightSpeed = carSpeed - pidCorrection - offsetLR - speedCorrection;
+    desiredRightSpeedometer = leftSpeedometer - pidCorrection * k;//right should be slower than left
+
+
+  leftSpeed = pidCorrection + speedCorrection;
+  rightSpeed = - pidCorrection - speedCorrection;
   
   //Serial.println (encL.read (), DEC) ;
   //Serial.println (encR.read (), DEC) ;
