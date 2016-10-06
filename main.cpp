@@ -334,8 +334,8 @@ int main(int argc, char *argv[])
     
     bool isArrived = false;
     VideoCapture cap(0);
-    cap.set(CV_CAP_PROP_FRAME_WIDTH,480 );
-	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 320);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH,320 );
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, 242);
     if (!cap.isOpened()) {
         throw string("Unable to open the device");
     } 
@@ -355,7 +355,7 @@ int main(int argc, char *argv[])
     while(!isArrived)
     {
 		if(positionXBarycentre != -1)		
-			positionXBarycentre = (demoCV(cap).x*100)/480;
+			positionXBarycentre = (demoCV(cap).x*100)/320;
 		
 		if(positionXBarycentre >=45 && positionXBarycentre <= 55)
 			positionXBarycentre =50;
