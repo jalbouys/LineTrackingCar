@@ -38,6 +38,7 @@ float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
 int carSpeed = 85;
 int wheelRotL = 0, wheelRotR = 0;
+int speedCorrection = 0;
 
 long loopTime;
 
@@ -81,7 +82,13 @@ void setup()
   float i = Serial.read()/100.0;
   float d = Serial.read()/100.0;
   //carSpeed = Serial.read();
+  carSpeed = Serial.read();
+  Serial.println(p);
+  Serial.println(i);
+  Serial.println(d);
+  Serial.println(carSpeed);
   
+  pidLR.SetTunings(p, i, d);  
   Serial.flush();
   */
   pidLR.SetSampleTime(70);//10ms
