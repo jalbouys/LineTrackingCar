@@ -30,8 +30,8 @@ int offsetLR = 0;
 
 double linePos = 50;//position of the line in front of robot
 double pidCorrection = 0;//PID correction to set robot back on track
-PID pidLR(&linePos, &pidCorrection, &centerPos, 2 ,0.1, 0.3, DIRECT);
-//PID pidLR(&linePos, &pidCorrection, &centerPos, 1 , .5, .1, DIRECT);
+PID pidLR(&linePos, &pidCorrection, &centerPos, 2 ,0.1, 1, DIRECT);
+//PID pidLR(&linePos, &pidCorrection, &centerPos, 2 , .1, .3, DIRECT);
 
 float leftSpeed = 0, rightSpeed = 0;//desired motor speeds
 float leftSpeedometer = 0, rightSpeedometer = 0;
